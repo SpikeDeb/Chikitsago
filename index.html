@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>ChikitsaGo</title>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;background:var(--bg);color:var(--ink);font-family:Nunito,system-ui,sans-serif}
+:root{padding-top:env(safe-area-inset-top,0px)}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+.app{max-width:480px;margin:0 auto;padding:0 16px 110px}
+h1,h2,.hd{font-family:'Baloo 2',Nunito,sans-serif}
+h1{font-size:27px;font-weight:800;margin:14px 0 2px;line-height:1.15}
+h2{font-size:19px;font-weight:700;margin:20px 0 8px}
+p{margin:0;color:var(--mute);font-size:14px;line-height:1.5}
+.hero{margin:0 -16px;background:var(--pri);color:#fff;border-radius:0 0 28px 8px;overflow:hidden;position:relative}
+.hero .t{padding:18px 20px 0;position:relative;z-index:2}
+.hero .t b{font:800 15px 'Baloo 2';opacity:.95;display:flex;align-items:center;gap:8px}
+.hero h1{color:#fff;font-size:26px;margin:10px 0 4px;max-width:230px}
+.hero p{color:#d6eadd;max-width:220px}
+.hero svg{display:block;width:100%;height:auto;margin-top:-34px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.city{background:var(--card);border:1.5px solid var(--line);border-radius:20px 20px 20px 6px;padding:0;text-align:left;cursor:pointer;color:var(--ink);overflow:hidden;font:inherit}
+.city:nth-child(even){border-radius:20px 20px 6px 20px}
+.city:focus-visible,.slot:focus-visible,.date:focus-visible,.btn:focus-visible,.tab:focus-visible{outline:3px solid var(--acc);outline-offset:2px}
+.city .art{height:64px;display:block;width:100%}
+.city div{padding:10px 12px 12px}
+.city b{font:700 17px 'Baloo 2';display:block;line-height:1.2}
+.city small{color:var(--mute);font-size:12px}
+.sup{display:flex;gap:12px;align-items:center;background:var(--card);border:1.5px dashed var(--red);border-radius:18px;padding:12px 14px;margin-top:18px}
+.sup .ic{width:42px;height:42px;border-radius:50%;background:var(--red);display:grid;place-items:center;flex:none}
+.sup b{font:700 15px 'Baloo 2';display:block}
+.back{border:0;background:var(--soft);color:var(--pri);border-radius:12px 12px 12px 4px;padding:8px 14px;font:700 14px Nunito;cursor:pointer;margin:14px 0 4px}
+.dates{display:flex;gap:8px;overflow-x:auto;padding:4px 2px 8px}
+.date{flex:0 0 auto;min-width:60px;border:1.5px solid var(--line);background:var(--card);color:var(--ink);border-radius:16px 16px 16px 5px;padding:8px 6px;text-align:center;cursor:pointer;font:700 12px Nunito}
+.date b{display:block;font:800 21px 'Baloo 2';line-height:1.1}
+.date small{display:block;font-weight:600;color:var(--mute);font-size:10px}
+.date.on{background:var(--pri);color:var(--onpri);border-color:var(--pri)}
+.date.on small{color:var(--onpri);opacity:.85}
+.doc{background:var(--card);border:1.5px solid var(--line);border-radius:22px 22px 22px 6px;padding:14px;margin-bottom:14px}
+.row{display:flex;gap:12px;align-items:center}
+.row svg{flex:none;width:64px;height:64px}
+.name{font:700 18px 'Baloo 2';line-height:1.2}
+.tag{display:inline-block;background:var(--soft);color:var(--pri);border-radius:8px;padding:2px 9px;font-size:12px;font-weight:700;margin-top:3px}
+.clinic{font-size:13px;color:var(--mute);margin-top:10px;display:flex;gap:6px;align-items:flex-start}
+.slots{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.slot{border:1.5px solid var(--pri);background:transparent;color:var(--pri);border-radius:10px;padding:7px 12px;font:700 13px Nunito;cursor:pointer}
+.slot[disabled]{border-color:var(--line);color:var(--mute);text-decoration:line-through;cursor:not-allowed}
+.btn{display:block;width:100%;border:0;background:var(--pri);color:var(--onpri);border-radius:16px 16px 16px 5px;padding:14px;font:700 16px 'Baloo 2';cursor:pointer;margin-top:12px;text-align:center;text-decoration:none}
+.btn.wa{background:var(--wa);color:#fff}
+.btn.red{background:var(--red);color:#fff}
+.btn.ghost{background:var(--soft);color:var(--pri)}
+.link{background:none;border:0;color:var(--pri);font:700 13px Nunito;cursor:pointer;padding:10px 0 0}
+input{width:100%;padding:13px;border-radius:12px;border:1.5px solid var(--line);background:var(--card);color:var(--ink);font:600 15px Nunito;margin-top:8px}
+.empty{text-align:center;padding:26px 10px}
+.box{background:var(--card);border:1.5px solid var(--line);border-radius:22px 22px 22px 6px;padding:16px;margin-top:10px}
+dl{margin:12px 0 0;display:grid;grid-template-columns:96px 1fr;gap:9px;font-size:14px}
+dt{color:var(--mute)}dd{margin:0;font-weight:700}
+.tabs{position:fixed;left:0;right:0;bottom:0;background:var(--card);border-top:1.5px solid var(--line);display:flex;justify-content:center;padding:6px 8px calc(6px + env(safe-area-inset-bottom,0px));z-index:5}
+.tabs>div{display:flex;width:100%;max-width:480px}
+.tab{flex:1;border:0;background:none;color:var(--mute);font:700 12px Nunito;display:flex;flex-direction:column;align-items:center;gap:2px;padding:6px;cursor:pointer;border-radius:12px}
+.tab.on{color:var(--pri)}
+.tab svg{width:24px;height:24px}
+.faq summary{font-weight:700;cursor:pointer;padding:8px 0}
+.faq details{border-bottom:1px solid var(--line)}
+.faq p{padding-bottom:10px}
+.stamp{display:inline-block;border:2.5px solid var(--pri);color:var(--pri);border-radius:10px;padding:2px 12px;font:800 20px 'Baloo 2';transform:rotate(-4deg)}
+:root{--bg:#0b0a2a;--card:rgba(255,255,255,.09);--ink:#f4f2ff;--mute:#bab6e6;--pri:#7a5cff;--pri2:#5a3de0;--onpri:#fff;--soft:rgba(122,92,255,.25);--acc:#ffc83d;--red:#ff6b81;--line:rgba(255,255,255,.18);--wa:#1fae62;color-scheme:dark}
+html{background:radial-gradient(900px 500px at 85% -5%,#3b2bb5 0,transparent 60%),radial-gradient(700px 500px at 0% 40%,#0b7f9a55 0,transparent 60%),radial-gradient(600px 400px at 100% 100%,#c0398b44 0,transparent 60%),#0b0a2a fixed}
+body{background:transparent}
+.app{position:relative;z-index:1}
+.hero{background:linear-gradient(135deg,#6d4aff,#19b6d3);min-height:200px;box-shadow:0 14px 40px #6d4aff55}
+.hero .mascot{position:absolute;right:4px;bottom:0;width:150px;z-index:2}
+.hero .mascot svg{margin:0;width:100%}
+.city,.doc,.box,.sup,.date,input,.pill,.tabs{backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
+.slot,.tag,.link,.back,.tab.on,.date.on small,.stamp{color:#cfc4ff}
+.slot,.stamp{border-color:#9d86ff}
+.tag{background:rgba(122,92,255,.28)}
+.date.on{background:linear-gradient(135deg,#7a5cff,#19b6d3);border-color:transparent;color:#fff}
+.btn{background:linear-gradient(135deg,#7a5cff,#5a3de0);box-shadow:0 8px 20px #5a3de066}
+.btn.ghost{background:var(--soft);color:#e3dcff;box-shadow:none}
+.btn.red{background:linear-gradient(135deg,#ff6b81,#e0405a)}
+.btn.wa{background:linear-gradient(135deg,#25c26f,#17934f)}
+.city:hover,.doc:hover{transform:translateY(-3px);transition:transform .2s}
+.city,.doc{transition:transform .2s}
+.row svg{transition:transform .3s}.doc:hover .row svg{transform:rotate(-6deg) scale(1.08)}
+.st{display:flex;gap:8px;margin:16px 0 4px}
+.pill{flex:1;border:1.5px solid var(--line);background:var(--card);color:var(--ink);border-radius:999px;padding:10px;font:700 15px 'Baloo 2';cursor:pointer}
+.pill.on{background:linear-gradient(135deg,#7a5cff,#19b6d3);border-color:transparent;color:#fff}
+.sq{margin:10px 0 14px}
+#scene{position:fixed;inset:0;perspective:800px;overflow:hidden;z-index:0;pointer-events:none}
+#sg{position:absolute;inset:0;transform-style:preserve-3d;transition:transform .25s ease-out}
+.fl{position:absolute;animation:fl var(--f) ease-in-out infinite alternate}
+.cube{position:relative;width:var(--s);height:var(--s);transform-style:preserve-3d;animation:sp var(--d) linear infinite}
+.cube i{position:absolute;inset:0;border:2px solid rgba(255,255,255,.4);background:rgba(122,92,255,.2);display:grid;place-items:center;font:800 calc(var(--s)*.5) 'Baloo 2';color:rgba(255,255,255,.75);font-style:normal}
+.cube i:nth-child(1){transform:translateZ(calc(var(--s)/2))}.cube i:nth-child(2){transform:rotateY(90deg) translateZ(calc(var(--s)/2))}.cube i:nth-child(3){transform:rotateY(180deg) translateZ(calc(var(--s)/2))}.cube i:nth-child(4){transform:rotateY(-90deg) translateZ(calc(var(--s)/2))}.cube i:nth-child(5){transform:rotateX(90deg) translateZ(calc(var(--s)/2))}.cube i:nth-child(6){transform:rotateX(-90deg) translateZ(calc(var(--s)/2))}
+.caps{width:calc(var(--s)*.45);height:var(--s);border-radius:99px;background:linear-gradient(#ff6b81 50%,#fff 50%);box-shadow:inset -4px 0 8px #0003,0 0 18px #ff6b8166;animation:sp2 var(--d) linear infinite}
+@keyframes sp{to{transform:rotateX(360deg) rotateY(360deg)}}
+@keyframes sp2{to{transform:rotateY(360deg) rotateZ(360deg)}}
+@keyframes fl{to{transform:translate3d(14px,-34px,60px)}}
+.bob{animation:bob 3s ease-in-out infinite}@keyframes bob{50%{transform:translateY(-6px)}}
+.wave{transform-origin:120px 150px;animation:wv 1.3s ease-in-out infinite}@keyframes wv{50%{transform:rotate(-16deg)}}
+.blink{transform-origin:75px 80px;animation:bl 4s infinite}@keyframes bl{0%,94%,100%{transform:scaleY(1)}97%{transform:scaleY(.1)}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div id="scene" aria-hidden="true"><div id="sg"></div></div>
+<div class="app" id="app"></div>
+<nav class="tabs"><div>
+<button class="tab" data-t="home"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-8 9 8v10a1 1 0 01-1 1h-5v-6H9v6H4a1 1 0 01-1-1z"/></svg>Home</button>
+<button class="tab" data-t="mine"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="3"/><path d="M8 3v4M16 3v4M3 11h18"/></svg>My bookings</button>
+<button class="tab" data-t="support"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12a7 7 0 0114 0v4a2 2 0 01-2 2h-1v-6h3M5 12v0M7 18H6a2 2 0 01-2-2v-3h3v5zM17 18v1a2 2 0 01-2 2h-3"/></svg>Support</button>
+</div></nav>
+<script>
+// ---- Edit these before launch ----
+var SUPPORT_PHONE="+91 99999 11111";   // replace with your real support number
+var SUPPORT_WA="919999911111";          // same number for WhatsApp, with country code, no +
+var SUPPORT_MAIL="support@chikitsago.in";
+var SUPPORT_HOURS="Every day, 8 AM to 9 PM";
+var BOOK_WA="919999911111";             // number that receives booking messages
+var STATES={
+ Tripura:["Agartala","Udaipur","Dharmanagar","Kailashahar","Belonia","Ambassa","Khowai","Teliamura","Sabroom","Sonamura","Bishalgarh","Kumarghat","Santirbazar","Melaghar","Jirania","Mohanpur"],
+ Assam:["Guwahati","Silchar","Dibrugarh","Jorhat","Nagaon","Tinsukia","Tezpur","Bongaigaon","Dhubri","Goalpara","Karimganj","Diphu","Sivasagar","Golaghat","Barpeta","Nalbari","Kokrajhar","Hailakandi","North Lakhimpur","Mangaldoi","Haflong","Lanka"]};
+var PAL=[["#5b3df5","#ffc83d"],["#0ea5a4","#ffd166"],["#e4572e","#ffe08a"],["#2a9d8f","#f4a261"],["#c0398b","#ffd6a5"],["#2b6cb0","#9ae6b4"]];
+var CITIES=[],DOCS=[],SP=[["General Physician","MBBS, MD (Medicine)",300],["Pediatrician","MBBS, DCH",450],["Gynecologist","MBBS, MS (OBG)",500],["Orthopedic","MBBS, MS (Orthopedics)",600],["Dentist","BDS, MDS",350],["Eye Specialist","MBBS, MS (Ophthalmology)",450],["Skin Specialist","MBBS, MD (Dermatology)",500],["ENT Specialist","MBBS, MS (ENT)",450],["Cardiologist","MBBS, DM (Cardiology)",700],["Diabetologist","MBBS, MD (Medicine), Diabetes fellowship",450]];
+var FN=[["Anita",1],["Rajib",0],["Sumit",0],["Priya",1],["Mahesh",0],["Neha",1],["Arjun",0],["Kavita",1],["Biplab",0],["Sunita",1],["Dipak",0],["Mitali",1],["Pranab",0],["Rina",1],["Amit",0],["Jyoti",1],["Kunal",0],["Madhu",1],["Subrata",0],["Pallavi",1]];
+var LNS={Tripura:["Debnath","Sen","Das","Nath","Paul","Roy","Saha","Deb","Bhowmik","Nandi","Ghosh","Majumder"],Assam:["Gogoi","Bora","Hazarika","Baruah","Sharma","Dutta","Kalita","Choudhury","Barman","Saikia","Phukan","Das"]};
+var SKN=["#d9a47a","#c68b62","#b57d57","#e0b08a","#c9916b"],HRC=["#1e1a18","#2a2420","#3a2f2a","#8b8b8b"],BGS=["#cfe6d6","#f7e2b0","#cfe0ee","#f3d5dc","#d9d0ee","#e4dcc6"];
+var DP=[[1,2,3,4,5,6],[1,3,5],[2,4,6],[1,2,3,4,5],[0,1,2,3,4,5,6]];
+var SL=[["10:00 AM","10:30 AM","11:00 AM","11:30 AM","5:00 PM","5:30 PM"],["4:00 PM","4:30 PM","5:00 PM","5:30 PM"],["9:00 AM","9:30 AM","10:00 AM","6:00 PM","6:30 PM"],["11:00 AM","12:00 PM","3:00 PM","4:00 PM"]];
+var AREA=["Main Road","Hospital Road","Bus Stand Road","Market Area","Club Road"],CT=["Clinic","Health Point","Care Centre","Polyclinic"];
+(function(){var ci=0,id=1;Object.keys(STATES).forEach(function(st){STATES[st].forEach(function(n,i){
+ var p=PAL[ci%PAL.length];CITIES.push({n:n,st:st,c:p[0],c2:p[1]});
+ var big=i<4?4:i<9?3:2;
+ for(var k=0;k<big;k++){var sp=SP[(ci*3+k*7)%SP.length],fn=FN[(ci*3+k*7+k)%FN.length],ln=LNS[st][(ci*5+k*3)%12];
+  DOCS.push({id:id++,city:n,name:"Dr. "+fn[0]+" "+ln,spec:sp[0],exp:(6+(ci+k*5)%14)+" years",fee:sp[2],qual:sp[1],clinic:ln+" "+CT[(ci+k)%4]+", "+AREA[(ci+k*2)%5],ph:"+91 9"+(8000+ci*37+k*11)+" "+(10000+ci*131+k*977).toString().slice(-5),days:DP[(ci+k)%5],slots:SL[(ci+k*2)%4],sk:SKN[(ci+k)%5],hr:HRC[(ci+k*2)%4],f:fn[1],bg:BGS[(ci+k)%6]});}
+ ci++;});});})();
+var DN=["Sun","Mon","Tue","Wed","Thu","Fri","Sat"],MN=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+var booked={},mine=[];
+try{var s=localStorage.getItem("hm_mine");if(s){mine=JSON.parse(s);mine.forEach(function(m){booked[m.k]=1})}}catch(e){}
+function save(){try{localStorage.setItem("hm_mine",JSON.stringify(mine))}catch(e){}}
+var S={state:"Tripura",q:"",view:"home",city:null,date:null,doc:null,slot:null,wa:""};
+var A=document.getElementById("app");
+function iso(d){return d.getFullYear()+"-"+(d.getMonth()+1)+"-"+d.getDate()}
+function pretty(s){var p=s.split("-");return p[2]+" "+MN[p[1]-1]}
+function days7(){var o=[],t=new Date();for(var i=0;i<7;i++)o.push(new Date(t.getFullYear(),t.getMonth(),t.getDate()+i));return o}
+function esc(s){return String(s).replace(/[&<>"]/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]})}
+function dayLabel(d,i){return i===0?"Today":i===1?"Tomorrow":DN[d.getDay()]}
+// hand-drawn style doctor portrait
+function avatar(d){
+ var hair=d.f?'<path d="M17 36c-2-16 8-23 15-23s17 7 15 23c-1 7-4 11-4 11l-3-14c-4 2-14 2-18-1l-3 15s-3-4-2-11z" fill="'+d.hr+'"/>':'<path d="M18 31c0-12 7-18 14-18s14 6 14 18c-5-5-9-8-14-8s-9 3-14 8z" fill="'+d.hr+'"/>';
+ return '<svg viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="32" r="31" fill="'+d.bg+'"/><path d="M6 60c2-12 12-16 26-16s24 4 26 16a31 31 0 01-52 0z" fill="#fff"/><path d="M26 45l6 9 6-9" fill="none" stroke="#c9d3cc" stroke-width="2"/><rect x="28" y="36" width="8" height="10" rx="3" fill="'+d.sk+'"/>'+(d.f?hair:'')+'<ellipse cx="32" cy="30" rx="11" ry="12.5" fill="'+d.sk+'"/>'+(d.f?'<path d="M21 27c3-9 19-9 22 0-6-3-16-3-22 0z" fill="'+d.hr+'"/>':hair)+'<circle cx="27.5" cy="31" r="1.4" fill="#2a1d18"/><circle cx="36.5" cy="31" r="1.4" fill="#2a1d18"/><path d="M28 36c2.5 2.2 5.5 2.2 8 0" fill="none" stroke="#7a3f33" stroke-width="1.6" stroke-linecap="round"/><path d="M22 47c0 9 4 11 6 11M42 47c0 9-4 11-6 11" fill="none" stroke="#1d5a43" stroke-width="2" stroke-linecap="round"/><circle cx="28" cy="58" r="2.4" fill="#f3a712"/></svg>'}
+function cityArt(c){
+ return '<svg class="art" viewBox="0 0 160 64" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><rect width="160" height="64" fill="'+c.c+'"/><circle cx="128" cy="20" r="11" fill="'+c.c2+'"/><path d="M0 52c26-14 46-6 70-12s58-8 90 6v18H0z" fill="#000" opacity=".16"/><g fill="#fff" opacity=".92"><rect x="24" y="30" width="22" height="28" rx="2"/><rect x="50" y="22" width="26" height="36" rx="2"/><rect x="80" y="34" width="18" height="24" rx="2"/></g><g fill="'+c.c+'"><rect x="29" y="36" width="4" height="4"/><rect x="37" y="36" width="4" height="4"/><rect x="56" y="29" width="4" height="4"/><rect x="66" y="29" width="4" height="4"/><rect x="56" y="38" width="4" height="4"/><rect x="66" y="38" width="4" height="4"/></g><path d="M63 8v10M58 13h10" stroke="#d6453d" stroke-width="3.5" stroke-linecap="round"/></svg>'}
+var MASCOT='<svg viewBox="0 0 150 170" aria-hidden="true"><g class="bob"><path d="M20 170c0-34 22-52 55-52s55 18 55 52z" fill="#fff"/><path d="M62 120l13 22 13-22" fill="#e8e6ff"/><rect x="66" y="100" width="18" height="22" rx="7" fill="#e0ac84"/><ellipse cx="75" cy="78" rx="27" ry="30" fill="#e8b78f"/><path d="M47 74c-3-26 14-38 28-38s31 12 28 38c-6-10-14-16-28-16s-22 6-28 16z" fill="#2a1d1a"/><g class="blink"><ellipse cx="65" cy="80" rx="3.200" ry="4" fill="#2a1d18"/><ellipse cx="85" cy="80" rx="3.200" ry="4" fill="#2a1d18"/></g><path d="M64 92c6 7 16 7 22 0" fill="none" stroke="#8a3f35" stroke-width="3" stroke-linecap="round"/><circle cx="57" cy="90" r="5" fill="#ff9a8b" opacity=".5"/><circle cx="93" cy="90" r="5" fill="#ff9a8b" opacity=".5"/><path d="M50 122c-2 22 8 30 14 30M100 122c2 22-8 30-14 30" fill="none" stroke="#6d4aff" stroke-width="4" stroke-linecap="round"/><circle cx="64" cy="152" r="6" fill="#ffc83d"/><path d="M104 138v8M100 142h8" stroke="#ff4d5e" stroke-width="3.500" stroke-linecap="round"/></g><g class="wave"><path d="M120 150c14-8 22-26 20-44" fill="none" stroke="#fff" stroke-width="16" stroke-linecap="round"/><circle cx="140" cy="102" r="9" fill="#e8b78f"/></g></svg>';
+function head(){return '<div class="hero"><div class="t"><b><svg width="26" height="26" viewBox="0 0 26 26"><rect width="26" height="26" rx="8" fill="#fff"/><path d="M13 6v14M6 13h14" stroke="#d6453d" stroke-width="4" stroke-linecap="round"/></svg>ChikitsaGo</b><h1>Namaskar! Which city are you in?</h1><p>See which doctors are free and book a visit in a minute.</p></div><div class="mascot">'+MASCOT+'</div></div>'}
+function plain(t,s){return '<h1>'+t+'</h1><p>'+s+'</p>'}
+function go(v,x){for(var k in x)S[k]=x[k];S.view=v;render();window.scrollTo(0,0)}
+function cnt(c,d){return DOCS.filter(function(x){return x.city===c&&x.days.indexOf(d.getDay())>-1}).length}
+function free(x,date){return x.slots.filter(function(s){return !booked[x.id+"|"+date+"|"+s]}).length}
+var PIN='<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" style="flex:none;margin-top:1px"><path d="M12 22s7-6.5 7-12a7 7 0 00-14 0c0 5.500 7 12 7 12z"/><circle cx="12" cy="10" r="2.500"/></svg>';
+function supBox(){return '<div class="sup"><div class="ic"><svg width="22" height="22" viewBox="0 0 24 24" fill="#fff"><path d="M6.600 10.800a15 15 0 006.600 6.600l2.200-2.200a1 1 0 011-.25 11 11 0 003.500.56 1 1 0 011 1V20a1 1 0 01-1 1A17 17 0 013 4a1 1 0 011-1h3.500a1 1 0 011 1c0 1.200.2 2.400.56 3.500a1 1 0 01-.25 1z"/></svg></div><div><b>Need help booking?</b><p>Call us on <a href="tel:'+SUPPORT_PHONE.replace(/ /g,"")+'" style="color:var(--red);font-weight:700">'+SUPPORT_PHONE+'</a></p></div></div>'}
+function cityCards(){var q=S.q.trim().toLowerCase(),o="";CITIES.filter(function(c){return c.st===S.state&&c.n.toLowerCase().indexOf(q)>-1}).forEach(function(c){var n=DOCS.filter(function(x){return x.city===c.n}).length;o+='<button class="city" data-c="'+c.n+'">'+cityArt(c)+'<div><b>'+c.n+'</b><small>'+n+' doctors listed</small></div></button>'});return o||'<p style="grid-column:1/3;text-align:center;padding:20px">No city found. Try another spelling.</p>'}
+function bindC(){A.querySelectorAll("[data-c]").forEach(function(e){e.onclick=function(){go("list",{city:e.dataset.c,date:null})}})}
+function render(){
+ var h="";
+ var tabOn=({home:"home",list:"home",info:"home",book:"home",done:"home",mine:"mine",support:"support"})[S.view];
+ document.querySelectorAll(".tab").forEach(function(t){t.classList.toggle("on",t.dataset.t===tabOn)});
+ if(S.view==="home"){
+  h+=head()+'<div class="st">'+Object.keys(STATES).map(function(t){return '<button class="pill'+(S.state===t?' on':'')+'" data-st="'+t+'">'+t+'</button>'}).join("")+'</div><input id="sq" class="sq" placeholder="Search city in '+S.state+'" value="'+esc(S.q)+'" autocomplete="off"><div class="grid" id="cg">'+cityCards()+'</div>'+supBox()+'<p style="text-align:center;margin-top:16px;font-size:12px">Doctor listings shown are samples for demo. Real clinics go live once verified.</p>';
+ }
+ if(S.view==="list"){
+  var ds=days7();if(!S.date)S.date=iso(ds[0]);
+  h+='<button class="back" data-go="home">&larr; All cities</button>'+plain(esc(S.city),"Pick a day, then pick a time that suits you.")+'<h2>Which day?</h2><div class="dates">';
+  ds.forEach(function(d,i){h+='<button class="date'+(iso(d)===S.date?' on':'')+'" data-d="'+iso(d)+'">'+dayLabel(d,i)+'<b>'+d.getDate()+'</b><small>'+cnt(S.city,d)+' available</small></button>'});
+  h+='</div><h2>Doctors available</h2>';
+  var dd=ds.filter(function(d){return iso(d)===S.date})[0];
+  var list=DOCS.filter(function(x){return x.city===S.city&&x.days.indexOf(dd.getDay())>-1});
+  if(!list.length)h+='<div class="empty"><b class="hd" style="font-size:18px">No doctor sitting this day</b><p>Please try another day.</p></div>';
+  list.forEach(function(x){
+   h+='<div class="doc"><div class="row">'+avatar(x)+'<div><div class="name">'+esc(x.name)+'</div><span class="tag">'+esc(x.spec)+'</span><p style="font-size:12px;margin-top:3px">'+free(x,S.date)+' of '+x.slots.length+' slots free &middot; &#8377;'+x.fee+'</p></div></div><div class="clinic">'+PIN+'<span>'+esc(x.clinic)+'</span></div><div class="slots">';
+   x.slots.forEach(function(s){h+='<button class="slot" '+(booked[x.id+"|"+S.date+"|"+s]?'disabled':'')+' data-b="'+x.id+'" data-s="'+s+'">'+s+'</button>'});
+   h+='</div><button class="link" data-info="'+x.id+'">See full details</button></div>';
+  });
+  h+=supBox();
+ }
+ if(S.view==="info"){
+  var x=S.doc;
+  h+='<button class="back" data-go="list">&larr; Back</button><div class="box"><div class="row">'+avatar(x)+'<div><div class="name">'+esc(x.name)+'</div><span class="tag">'+esc(x.spec)+'</span></div></div><dl><dt>Degrees</dt><dd>'+esc(x.qual)+'</dd><dt>Experience</dt><dd>'+esc(x.exp)+'</dd><dt>Consultation</dt><dd>&#8377;'+x.fee+'</dd><dt>Clinic</dt><dd>'+esc(x.clinic)+'</dd><dt>City</dt><dd>'+esc(x.city)+'</dd><dt>Sits on</dt><dd>'+x.days.map(function(d){return DN[d]}).join(", ")+'</dd><dt>Phone</dt><dd>'+esc(x.ph)+'</dd></dl><a class="btn ghost" href="tel:'+x.ph.replace(/ /g,"")+'">Call the clinic</a></div>';
+ }
+ if(S.view==="book"){
+  var x=S.doc;
+  h+='<button class="back" data-go="list">&larr; Back</button>'+plain("Almost done","Tell us who the patient is.")+'<div class="box"><div class="row">'+avatar(x)+'<div><div class="name">'+esc(x.name)+'</div><p>'+esc(x.clinic)+'</p></div></div><p style="margin-top:10px"><b style="color:var(--ink)">'+pretty(S.date)+', '+S.slot+'</b></p><input id="nm" placeholder="Patient’s name" autocomplete="name"><input id="ph" placeholder="Mobile number" inputmode="tel" autocomplete="tel"><button class="btn" id="cf">Confirm booking</button></div>';
+ }
+ if(S.view==="done"){
+  var x=S.doc;
+  h+='<div class="empty"><span class="stamp">Booked!</span><h2 style="margin-top:14px">'+esc(x.name)+'</h2><p>'+pretty(S.date)+' at '+S.slot+'<br>'+esc(x.clinic)+'</p></div><a class="btn wa" href="'+S.wa+'" target="_blank" rel="noopener">Send details on WhatsApp</a><button class="btn ghost" data-go="home">Book another visit</button>';
+ }
+ if(S.view==="mine"){
+  h+=plain("My bookings","Visits you booked on this phone.");
+  if(!mine.length)h+='<div class="empty"><p>Nothing booked yet. Pick a city on Home to start.</p></div>';
+  mine.slice().reverse().forEach(function(m){h+='<div class="doc"><div class="name">'+esc(m.doc)+'</div><span class="tag">'+pretty(m.date)+', '+esc(m.slot)+'</span><div class="clinic">'+PIN+'<span>'+esc(m.clinic)+'</span></div><p style="margin-top:6px">Patient: '+esc(m.pt)+'</p></div>'});
+ }
+ if(S.view==="support"){
+  h+=plain("We’re here to help","Trouble booking or finding a doctor? Talk to a real person.")+'<div class="box"><dl style="grid-template-columns:80px 1fr"><dt>Phone</dt><dd>'+SUPPORT_PHONE+'</dd><dt>Email</dt><dd>'+SUPPORT_MAIL+'</dd><dt>Timing</dt><dd>'+SUPPORT_HOURS+'</dd></dl><a class="btn red" href="tel:'+SUPPORT_PHONE.replace(/ /g,"")+'">Call support</a><a class="btn wa" href="https://wa.me/'+SUPPORT_WA+'" target="_blank" rel="noopener">Chat on WhatsApp</a></div><h2>Common questions</h2><div class="faq"><details><summary>Do I pay when I book?</summary><p>No. You pay the doctor’s consultation fee at the clinic.</p></details><details><summary>How do I cancel or change a time?</summary><p>Call the clinic, or call our support number and we will help.</p></details><details><summary>My doctor is not listed</summary><p>Tell support. We add new doctors and clinics every week.</p></details></div>';
+ }
+ A.innerHTML=h;
+ var q=function(s,f){A.querySelectorAll(s).forEach(f)};
+ q("[data-c]",function(e){e.onclick=function(){go("list",{city:e.dataset.c,date:null})}});
+ q("[data-go]",function(e){e.onclick=function(){go(e.dataset.go,{})}});
+ q("[data-d]",function(e){e.onclick=function(){S.date=e.dataset.d;render()}});
+ q("[data-info]",function(e){e.onclick=function(){go("info",{doc:DOCS.filter(function(x){return x.id==e.dataset.info})[0]})}});
+ q("[data-b]",function(e){e.onclick=function(){go("book",{doc:DOCS.filter(function(x){return x.id==e.dataset.b})[0],slot:e.dataset.s})}});
+ q("[data-st]",function(e){e.onclick=function(){S.state=e.dataset.st;S.q="";render()}});
+ var sq=document.getElementById("sq");if(sq)sq.oninput=function(){S.q=sq.value;document.getElementById("cg").innerHTML=cityCards();bindC()};
+ var cf=document.getElementById("cf");
+ if(cf)cf.onclick=function(){
+  var n=document.getElementById("nm").value.trim(),p=document.getElementById("ph").value.trim();
+  if(!n||p.replace(/\D/g,"").length<10){alert("Please enter the patient’s name and a 10-digit mobile number.");return}
+  var k=S.doc.id+"|"+S.date+"|"+S.slot;booked[k]=1;
+  mine.push({k:k,doc:S.doc.name,clinic:S.doc.clinic,date:S.date,slot:S.slot,pt:n});save();
+  var msg="Hello, I want to book an appointment.\nDoctor: "+S.doc.name+"\nClinic: "+S.doc.clinic+"\nDate: "+pretty(S.date)+"\nTime: "+S.slot+"\nPatient: "+n+"\nMobile: "+p;
+  go("done",{wa:"https://wa.me/"+BOOK_WA+"?text="+encodeURIComponent(msg)});
+ };
+}
+document.querySelectorAll(".tab").forEach(function(t){t.onclick=function(){go(t.dataset.t,{})}});
+render();
+(function(){var g=document.getElementById("sg"),h="";
+ for(var i=0;i<12;i++){var sz=24+Math.random()*44,l=Math.random()*96,t=Math.random()*92,d=14+Math.random()*16,f=5+Math.random()*6,z=Math.round(-200+Math.random()*320);
+  h+='<div class="fl" style="left:'+l+'%;top:'+t+'%;--f:'+f+'s;transform:translateZ('+z+'px)">';
+  if(i%3===2)h+='<div class="caps" style="--s:'+(sz*1.3)+'px;--d:'+d+'s"></div>';
+  else h+='<div class="cube" style="--s:'+sz+'px;--d:'+d+'s"><i>'+(i%2?'+':'')+'</i><i></i><i>'+(i%2?'+':'')+'</i><i></i><i></i><i></i></div>';
+  h+='</div>';}
+ g.innerHTML=h;
+ window.addEventListener("pointermove",function(e){var x=e.clientX/innerWidth-.5,y=e.clientY/innerHeight-.5;g.style.transform="rotateY("+x*14+"deg) rotateX("+(-y*14)+"deg)"});
+})();
+</script>
+</body>
+</html>
